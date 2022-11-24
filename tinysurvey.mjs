@@ -107,7 +107,7 @@ app.post('/setoptions/:topic', async (request, response) => {
   let newSurvey = { topic: topic, options: options };
 
   // save it
-  await surveyManager.storeSurvey(newSurvey);
+  surveyManager.storeSurvey(newSurvey);
 
   // Render the survey page
   let surveyOptions = await surveyManager.getOptions(topic);
