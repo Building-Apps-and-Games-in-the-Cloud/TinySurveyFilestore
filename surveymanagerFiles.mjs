@@ -16,28 +16,28 @@ class SurveyManagerFiles {
 
     async storeSurveys() {
         let surveysString = JSON.stringify(this.surveys);
-        fs.writeFile(this.fileName, surveysString).then(()=>console.log("File Written"));
+        fs.writeFile(this.fileName, surveysString).then(() => console.log("File Written"));
         console.log("Started storing");
     }
 
-async loadSurveys() {
-    try {
-        let surveysString = await fs.readFile(this.fileName);
-        let surveyValues = JSON.parse(surveysString);
-        let result = new Surveys();
-        surveyValues.surveys.forEach(surveyValue => {
-            let survey = new Survey(surveyValue);
-            result.saveSurvey(survey);
-        });
-        console.log("Surveys loaded");
-        this.surveys = result;
+    async loadSurveys() {
+        try {
+            let surveysString = await fs.readFile(this.fileName);
+            let surveyValues = JSON.parse(surveysString);
+            let result = new Surveys();
+            surveyValues.surveys.forEach(surveyValue => {
+                let survey = new Survey(surveyValue);
+                result.saveSurvey(survey);
+            });
+            console.log("Surveys loaded");
+            this.surveys = result;
+        }
+        catch {
+            console.log("Survey file not found - empty survey created");
+            this.surveys = new Surveys();
+            await this.storeSurveys();
+        }
     }
-    catch {
-        console.log("Survey file not found - empty survey created");
-        this.surveys = new Surveys();
-        await this.storeSurveys();
-    }
-}
 
     /**
      * Stores a survey
